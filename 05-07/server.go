@@ -1,30 +1,40 @@
 package main
 
 import (
-	"github.com/Moonlight-Zhao/go-project-example/cotroller"
+	"github.com/Moonlight-Zhao/go-project-example/controller"
 	"github.com/Moonlight-Zhao/go-project-example/repository"
 	"github.com/gin-gonic/gin"
-	"os"
 )
 
 func main() {
-	if err := Init("./data/"); err != nil {
-		os.Exit(-1)
+	if err := Init(); err != nil {
+		panic(err)
 	}
 	r := gin.Default()
 	r.GET("/community/page/get/:id", func(c *gin.Context) {
 		topicId := c.Param("id")
-		data := cotroller.QueryPageInfo(topicId)
+		data := controller.QueryPageInfo(topicId)
 		c.JSON(200, data)
 	})
+
+	r.POST("community/post", func(c *gin.Context) {
+		parentId, title, content := c.PostForm("parent_id"), c.PostForm("title"), c.PostForm("content")
+		err := controller.Create(parentId, title, content)
+		if err != nil {
+			c.JSON(400, err.Error())
+		} else {
+			c.JSON(200, "Added")
+		}
+	})
+
 	err := r.Run()
 	if err != nil {
 		return
 	}
 }
 
-func Init(filePath string) error {
-	if err := repository.Init(filePath); err != nil {
+func Init() error {
+	if err := repository.Init(); err != nil {
 		return err
 	}
 	return nil

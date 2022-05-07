@@ -4,20 +4,27 @@ import (
 	"bufio"
 	"encoding/json"
 	"os"
+	"sync"
 )
 
 var (
+	curId    int64
+	filePath string
+
+	mu            sync.RWMutex
 	topicIndexMap map[int64]*Topic
 	postIndexMap  map[int64][]*Post
 )
 
-func Init(filePath string) error{
-	if err := initTopicIndexMap(filePath);err!=nil{
+func Init() error {
+	filePath = "./data/"
+	if err := initTopicIndexMap(filePath); err != nil {
 		return err
 	}
-	if err := initPostIndexMap(filePath);err!=nil{
+	if err := initPostIndexMap(filePath); err != nil {
 		return err
 	}
+	initCurId()
 	return nil
 }
 
@@ -31,7 +38,7 @@ func initTopicIndexMap(filePath string) error {
 	for scanner.Scan() {
 		text := scanner.Text()
 		var topic Topic
-		if err := json.Unmarshal([]byte(text), &topic); err != nil {
+		if err = json.Unmarshal([]byte(text), &topic); err != nil {
 			return err
 		}
 		topicTmpMap[topic.Id] = &topic
@@ -40,7 +47,7 @@ func initTopicIndexMap(filePath string) error {
 	return nil
 }
 
-func initPostIndexMap(filePath string) error{
+func initPostIndexMap(filePath string) error {
 	open, err := os.Open(filePath + "post")
 	if err != nil {
 		return err
@@ -50,7 +57,7 @@ func initPostIndexMap(filePath string) error{
 	for scanner.Scan() {
 		text := scanner.Text()
 		var post Post
-		if err := json.Unmarshal([]byte(text), &post); err != nil {
+		if err = json.Unmarshal([]byte(text), &post); err != nil {
 			return err
 		}
 		posts, ok := postTmpMap[post.ParentId]
@@ -63,4 +70,15 @@ func initPostIndexMap(filePath string) error{
 	}
 	postIndexMap = postTmpMap
 	return nil
+}
+
+func initCurId() {
+	var i int64
+	for {
+		if _, ok := topicIndexMap[i]; !ok {
+			curId = i
+			return
+		}
+		i++
+	}
 }
