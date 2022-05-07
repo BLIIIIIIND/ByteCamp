@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/Moonlight-Zhao/go-project-example/service"
+	"github.com/BLIIIIIIND/ByteCamp/05-07/service"
 	"strconv"
 )
 

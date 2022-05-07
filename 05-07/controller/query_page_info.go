@@ -1,9 +1,8 @@
 package controller
 
 import (
+	"github.com/BLIIIIIIND/ByteCamp/05-07/service"
 	"strconv"
-
-	"github.com/Moonlight-Zhao/go-project-example/service"
 )
 
 type PageData struct {

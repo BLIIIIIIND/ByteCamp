@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/Moonlight-Zhao/go-project-example/controller"
-	"github.com/Moonlight-Zhao/go-project-example/repository"
+	"github.com/BLIIIIIIND/ByteCamp/05-07/controller"
+	"github.com/BLIIIIIIND/ByteCamp/05-07/repository"
 	"github.com/gin-gonic/gin"
 )
 

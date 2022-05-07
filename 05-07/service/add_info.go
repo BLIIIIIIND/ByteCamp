@@ -1,6 +1,8 @@
 package service
 
-import "github.com/Moonlight-Zhao/go-project-example/repository"
+import (
+	"github.com/BLIIIIIIND/ByteCamp/05-07/repository"
+)
 
 func CreatePost(parentId int64, content string) error {
 	return repository.NewPostDaoInstance().CreatePost(parentId, content)

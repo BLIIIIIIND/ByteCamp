@@ -1,14 +1,14 @@
 package service
 
 import (
-	"github.com/Moonlight-Zhao/go-project-example/repository"
+	"github.com/BLIIIIIIND/ByteCamp/05-07/repository"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
 
 func TestMain(m *testing.M) {
-	repository.Init("../data/")
+	repository.Init()
 	os.Exit(m.Run())
 }
 func TestQueryPageInfo(t *testing.T) {
